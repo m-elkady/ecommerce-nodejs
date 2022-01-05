@@ -6,8 +6,8 @@
   "author": "Mohammed Elkady",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --exec babel-node app.ts --extensions .ts,.js",
-    "ts": "tsc app.ts && nodemon --exec babel-node app.js"
+    "start": "babel-node app.ts --extensions .ts,.js",
+    "ts": "tsc app.ts && babel-node app.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "@types/mongoose": "^5.11.97",
-    "babel-cli": "^6.26.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.17.2",
