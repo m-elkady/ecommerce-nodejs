@@ -1,1 +1,1 @@
-web: babel-node app.ts --extensions .ts,.js
+web: ./node_modules/.bin/babel-node ./app.ts --extensions .ts,.js
