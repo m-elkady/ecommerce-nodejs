@@ -22,6 +22,7 @@ mongoose
     console.error("Connection error", err);
     process.exit();
   });
+
 const port = process.env.PORT || '3000';
 
 // start the Express server
