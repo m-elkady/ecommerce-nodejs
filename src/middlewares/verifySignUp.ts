@@ -1,11 +1,13 @@
-import { User } from '../models/db';
-import { ROLES } from '../models/db';
+import User,{ IUser } from '../models/user.model';
+import { NextFunction, Request, Response } from "express";
+import { CallbackError } from "mongoose";
 
-const checkDuplicateUsernameOrEmail = (req, res, next) => {
+const ROLES = ['user', 'admin','moderator'];
+const checkDuplicateUsernameOrEmail = (req: Request, res:Response, next: NextFunction) => {
   // Username
   User.findOne({
     username: req.body.username
-  }).exec((err, user) => {
+  }).exec((err: CallbackError, user: IUser| null) => {
     if (err) {
       res.status(500).send({ message: err });
       return;
@@ -19,7 +21,7 @@ const checkDuplicateUsernameOrEmail = (req, res, next) => {
     // Email
     User.findOne({
       email: req.body.email
-    }).exec((err, user) => {
+    }).exec((err: CallbackError, user: IUser| null) => {
       if (err) {
         res.status(500).send({ message: err });
         return;
@@ -35,7 +37,7 @@ const checkDuplicateUsernameOrEmail = (req, res, next) => {
   });
 };
 
-const checkRolesExisted = (req, res, next) => {
+const checkRolesExisted = (req: Request, res:Response, next: NextFunction) => {
   if (req.body.roles) {
     for (let i = 0; i < req.body.roles.length; i++) {
       if (!ROLES.includes(req.body.roles[i])) {

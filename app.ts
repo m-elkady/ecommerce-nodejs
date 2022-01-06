@@ -1,19 +1,19 @@
 import express from 'express';
 import mongoose from "mongoose";
-import * as dotenv from 'dotenv';
+import 'dotenv/config';
 import roleMigrate from './src/models/migrations/roles';
 import auth from './src/routes/auth';
 import home from './src/routes/home';
-
-dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use('/', auth);
 app.use('/', home);
 
+const dbUrl: string = process.env.DB_URL || 'mongodb://127.0.0.1:27017/ecommerce_db';
+
 mongoose
-  .connect(process.env.DB_URL)
+  .connect(dbUrl)
   .then(() => {
     console.log("Successfully connect to MongoDB.");
     roleMigrate();

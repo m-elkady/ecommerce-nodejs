@@ -1,7 +1,8 @@
-import { Role } from "../db";
+import Role from "../role.model";
+import { CallbackError } from "mongoose";
 
 const migrate = () => {
-  Role.estimatedDocumentCount((err, count) => {
+  Role.estimatedDocumentCount((err: CallbackError, count: number) => {
     if (!err && count === 0) {
       new Role({
         name: "user"

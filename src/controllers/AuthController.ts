@@ -1,16 +1,19 @@
+import { Request, Response } from "express";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { Role, User } from '../models/db';
+import { CallbackError } from "mongoose";
+import User, { IUser } from "../models/user.model";
+import Role, { IRole } from "../models/role.model";
 import config from '../config/auth.config';
 
 export default class AuthController {
 
-  login = (req: any, res: any) => {
+  login = (req: Request, res: Response) => {
     User.findOne({
       username: req.body.username
     })
       .populate("roles", "-__v")
-      .exec((err, user) => {
+      .exec((err: CallbackError, user: IUser) => {
         if (err) {
           res.status(500).send({ message: err });
           return;
@@ -51,7 +54,7 @@ export default class AuthController {
       });
   };
 
-  register = (req: any, res: any) => {
+  register = (req: Request, res: Response) => {
     const user = new User({
       username: req.body.username,
       email: req.body.email,
@@ -69,7 +72,7 @@ export default class AuthController {
           {
             name: { $in: req.body.roles }
           },
-          (err, roles) => {
+          (err: CallbackError, roles: IRole[]) => {
             if (err) {
               res.status(500).send({ message: err });
               return;
@@ -87,7 +90,7 @@ export default class AuthController {
           }
         );
       } else {
-        Role.findOne({ name: "user" }, (err, role) => {
+        Role.findOne({ name: "user" }, (err: CallbackError, role: IRole) => {
           if (err) {
             res.status(500).send({ message: err });
             return;
